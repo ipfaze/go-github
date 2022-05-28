@@ -12,9 +12,10 @@ import (
 func main() {
 	Mongo.Ping()
 
-	http.HandleFunc("/repos", getRepos)
-	http.HandleFunc("/repos/language/", getReposByLanguage)
-	http.HandleFunc("/repos/license/", getReposByLicense)
+	// Endpoint for repositories
+	http.HandleFunc("/api/repositories", getRepos)
+	http.HandleFunc("/api/repositories/language/", getReposByLanguage)
+	http.HandleFunc("/api/repositories/license/", getReposByLicense)
 
 	log.Println("info : server listening on port :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -29,7 +30,7 @@ func getRepos(w http.ResponseWriter, r *http.Request) {
 }
 
 func getReposByLanguage(w http.ResponseWriter, r *http.Request) {
-	language := strings.TrimPrefix(r.URL.Path, "/repos/language/")
+	language := strings.TrimPrefix(r.URL.Path, "/api/repositories/language/")
 
 	repositories := Mongo.GetReposByLanguage(language)
 
@@ -39,7 +40,7 @@ func getReposByLanguage(w http.ResponseWriter, r *http.Request) {
 }
 
 func getReposByLicense(w http.ResponseWriter, r *http.Request) {
-	license := strings.TrimPrefix(r.URL.Path, "/repos/license/")
+	license := strings.TrimPrefix(r.URL.Path, "/api/repositories/license/")
 
 	repositories := Mongo.GetReposByLicense(license)
 
