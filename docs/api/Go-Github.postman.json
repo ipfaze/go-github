@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "e126b8ae-54fd-4a1e-a4a0-5b7c279a076b",
+		"name": "Go-Github",
+		"description": "# Introduction\nThis API provides some endpoints to retrieve data from the last 100 repositories recently updated from GitHub.\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nNo authentication is required at this moment\n\n# Error Codes\nThere are no error codes at this moment.\nThe client should always get 200 as status code, if it's not the case, request will be in timeout.\n\n# Rate limit\nThere is no rate limit at this moment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Repositories",
+			"item": [
+				{
+					"name": "FindAllRepositories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "go-github.localhost/api/repositories",
+							"host": [
+								"go-github",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"repositories"
+							]
+						},
+						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "FindRepositoriesByLanguage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "go-github.localhost/api/repositories/language/go",
+							"host": [
+								"go-github",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"repositories",
+								"language",
+								"go"
+							]
+						},
+						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n```\n\nif request is : go-github.localhost/api/repositories/language/go\n\nAll language should start with \"go\" (it is not case sensitive)"
+					},
+					"response": []
+				},
+				{
+					"name": "FindRepositoriesByLicense",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "go-github.localhost/api/repositories/license/mit",
+							"host": [
+								"go-github",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"repositories",
+								"license",
+								"mit"
+							]
+						},
+						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n\n```\n\nif request is : go-github.localhost/api/repositories/license/mit\n\nAll license name should contains \"mit\" (it is not case sensitive)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistics",
+			"item": [
+				{
+					"name": "GetLanguageStatistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "go-github.localhost/api/statistics/language",
+							"host": [
+								"go-github",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"statistics",
+								"language"
+							]
+						},
+						"description": "``` json\n[\n    {\n        language: string,\n        total: int\n    },\n    {\n        ...\n    }\n]\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "GetLicenseStatistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "go-github.localhost/api/statistics/license",
+							"host": [
+								"go-github",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"statistics",
+								"license"
+							]
+						},
+						"description": "``` json\n[\n    {\n        license: string,\n        total: int\n    },\n    {\n        ...\n    }\n]\n\n\n```"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
