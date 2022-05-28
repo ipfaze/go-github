@@ -17,6 +17,10 @@ func main() {
 	http.HandleFunc("/api/repositories/language/", getReposByLanguage)
 	http.HandleFunc("/api/repositories/license/", getReposByLicense)
 
+	// Endpoint for statistics
+	http.HandleFunc("/api/statistics/language", getLanguageStatistics)
+	http.HandleFunc("/api/statistics/license", getLicenseStatistics)
+
 	log.Println("info : server listening on port :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -47,4 +51,20 @@ func getReposByLicense(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(repositories)
+}
+
+func getLanguageStatistics(w http.ResponseWriter, r *http.Request) {
+	statistics := Mongo.GetLanguageStatistics()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(statistics)
+}
+
+func getLicenseStatistics(w http.ResponseWriter, r *http.Request) {
+	statistics := Mongo.GetLicenseStatistics()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(statistics)
 }
