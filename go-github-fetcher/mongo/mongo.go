@@ -2,6 +2,7 @@ package mongo
 
 import (
 	Entity "go-github-fetcher/entity"
+	Helpers "go-github-fetcher/helpers"
 
 	"context"
 	"log"
@@ -101,5 +102,59 @@ func RemoveAllRepository(objectId string) {
 	_, err = repositoriesCollection.DeleteMany(context.TODO(), bson.M{"_id": bson.M{"$lt": oid}})
 	if err != nil {
 		log.Fatal("error : deleting repository before ", oid, " throw -> ", err)
+	}
+}
+
+func InsertLanguageStatistics(languageStats []Entity.LanguageStatistics) {
+	removeAllLanguageStatistics()
+
+	mongoClient := Client()
+	defer Disconnect(mongoClient)
+
+	languageStatisticsCollection := mongoClient.Database("go-github").Collection("language_statistics")
+
+	_, err := languageStatisticsCollection.InsertMany(context.TODO(), Helpers.LanguageStatisticsSliceToInterfaceSlice(languageStats))
+
+	if err != nil {
+		log.Fatal("error : inserting language statistics throw -> ", err)
+	}
+}
+
+func InsertLicenseStatistics(licenseStats []Entity.LicenseStatistics) {
+	removeAllLicenseStatistics()
+
+	mongoClient := Client()
+	defer Disconnect(mongoClient)
+
+	licenseStatisticsCollection := mongoClient.Database("go-github").Collection("license_statistics")
+
+	_, err := licenseStatisticsCollection.InsertMany(context.TODO(), Helpers.LicenseStatisticsSliceToInterfaceSlice(licenseStats))
+
+	if err != nil {
+		log.Fatal("error : inserting license statistics throw -> ", err)
+	}
+}
+
+func removeAllLanguageStatistics() {
+	mongoClient := Client()
+	defer Disconnect(mongoClient)
+
+	languageStatisticsCollection := mongoClient.Database("go-github").Collection("language_statistics")
+
+	_, err := languageStatisticsCollection.DeleteMany(context.TODO(), bson.M{})
+	if err != nil {
+		log.Fatal("error : deleting language statistics throw -> ", err)
+	}
+}
+
+func removeAllLicenseStatistics() {
+	mongoClient := Client()
+	defer Disconnect(mongoClient)
+
+	licenseStatisticsCollection := mongoClient.Database("go-github").Collection("license_statistics")
+
+	_, err := licenseStatisticsCollection.DeleteMany(context.TODO(), bson.M{})
+	if err != nil {
+		log.Fatal("error : deleting license statistics throw -> ", err)
 	}
 }

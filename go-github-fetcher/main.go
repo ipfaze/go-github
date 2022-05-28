@@ -2,6 +2,7 @@ package main
 
 import (
 	Entity "go-github-fetcher/entity"
+	Helpers "go-github-fetcher/helpers"
 	Mongo "go-github-fetcher/mongo"
 
 	"encoding/json"
@@ -63,9 +64,9 @@ func call(url string) []byte {
 }
 
 /*
-Function to convert a byte array to the GitResponse struct
+Function to convert a byte array to the RepositoriesResponse struct
 */
-func convertBytesToGitResponse(resp []byte) Entity.RepositoriesResponse {
+func convertBytesToRepositoriesResponse(resp []byte) Entity.RepositoriesResponse {
 	var gitResponse Entity.RepositoriesResponse
 
 	err := json.Unmarshal(resp, &gitResponse)
@@ -85,18 +86,38 @@ func sendRequestAndSaveData(url string) {
 
 	resp := call(url)
 
-	gitResp := convertBytesToGitResponse(resp)
+	repositoriesResponse := convertBytesToRepositoriesResponse(resp)
 
 	var idToDelete string
+	var languageStats []Entity.LanguageStatistics
+	var licenseStats []Entity.LicenseStatistics
+	var key int
 
-	for i := 0; i < len(gitResp.Items); i++ {
-		id := Mongo.InsertRepository(gitResp.Items[i])
+	for i := 0; i < len(repositoriesResponse.Items); i++ {
+		key = Helpers.FindLanguageStatistics(languageStats, repositoriesResponse.Items[i].Language)
+		if key == -1 {
+			languageStats = append(languageStats, Entity.LanguageStatistics{Language: repositoriesResponse.Items[i].Language, Total: 1})
+		} else {
+			languageStats[key].Total++
+		}
+
+		key = Helpers.FindLicenseStatistics(licenseStats, repositoriesResponse.Items[i].License.Name)
+		if key == -1 {
+			licenseStats = append(licenseStats, Entity.LicenseStatistics{License: repositoriesResponse.Items[i].License.Name, Total: 1})
+		} else {
+			licenseStats[key].Total++
+		}
+
+		id := Mongo.InsertRepository(repositoriesResponse.Items[i])
 		if i == 0 {
 			idToDelete = id
 		}
 	}
 
 	Mongo.RemoveAllRepository(idToDelete)
+
+	Mongo.InsertLanguageStatistics(languageStats)
+	Mongo.InsertLicenseStatistics(licenseStats)
 }
 
 /*
