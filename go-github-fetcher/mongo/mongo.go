@@ -19,9 +19,7 @@ var (
 	MONGO_URL = "mongodb://" + os.Getenv("MONGO_USER") + ":" + os.Getenv("MONGO_PASSWORD") + "@" + os.Getenv("MONGO_HOST") + ":" + os.Getenv("MONGO_PORT") + "/?maxPoolSize=20&w=majority"
 )
 
-/*
-Function to create a mongodb connection and return it
-*/
+//Client create a mongodb connection and return it
 func Client() *mongo.Client {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MONGO_URL))
 	if err != nil {
@@ -31,9 +29,7 @@ func Client() *mongo.Client {
 	return client
 }
 
-/*
-Function to release the mongodb connection
-*/
+//Disconnect release the mongodb connection
 func Disconnect(client *mongo.Client) {
 	err := client.Disconnect(context.TODO())
 
@@ -42,9 +38,7 @@ func Disconnect(client *mongo.Client) {
 	}
 }
 
-/*
-Function to test the connection to mongodb
-*/
+//Ping test the connection to mongodb
 func Ping() {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -58,9 +52,7 @@ func Ping() {
 	log.Println("info : successfully connected and pinged")
 }
 
-/*
-Function to insert a new GitItem into mongodb
-*/
+//InsertRepository insert a new Repository into mongodb
 func InsertRepository(repository Entity.Repository) string {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -85,9 +77,7 @@ func InsertRepository(repository Entity.Repository) string {
 	return res.InsertedID.(primitive.ObjectID).Hex()
 }
 
-/*
-Function to remove all GitItem into mongodb before the objectId set in parameter
-*/
+//RemoveAllRepository remove all Repository into mongodb before the objectId set in parameter
 func RemoveAllRepository(objectId string) {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -105,6 +95,7 @@ func RemoveAllRepository(objectId string) {
 	}
 }
 
+//InsertLanguageStatistics insert many language statistics into mongodb
 func InsertLanguageStatistics(languageStats []Entity.LanguageStatistics) {
 	removeAllLanguageStatistics()
 
@@ -120,6 +111,7 @@ func InsertLanguageStatistics(languageStats []Entity.LanguageStatistics) {
 	}
 }
 
+//InsertLicenseStatistics insert many license statistics into mongodb
 func InsertLicenseStatistics(licenseStats []Entity.LicenseStatistics) {
 	removeAllLicenseStatistics()
 
@@ -135,6 +127,7 @@ func InsertLicenseStatistics(licenseStats []Entity.LicenseStatistics) {
 	}
 }
 
+//removeAllLanguageStatistics remove all language statistics already existing into mongodb
 func removeAllLanguageStatistics() {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -147,6 +140,7 @@ func removeAllLanguageStatistics() {
 	}
 }
 
+//removeAllLicenseStatistics remove all license statistics already existing into mongodb
 func removeAllLicenseStatistics() {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)

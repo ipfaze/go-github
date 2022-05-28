@@ -17,9 +17,7 @@ var (
 	MONGO_URL = "mongodb://" + os.Getenv("MONGO_USER") + ":" + os.Getenv("MONGO_PASSWORD") + "@" + os.Getenv("MONGO_HOST") + ":" + os.Getenv("MONGO_PORT") + "/?maxPoolSize=20&w=majority"
 )
 
-/*
-Function to create a mongodb connection and return it
-*/
+//Client create a mongodb connection and return it
 func Client() *mongo.Client {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MONGO_URL))
 	if err != nil {
@@ -29,9 +27,7 @@ func Client() *mongo.Client {
 	return client
 }
 
-/*
-Function to release the mongodb connection
-*/
+//Disconnect release the mongodb connection
 func Disconnect(client *mongo.Client) {
 	err := client.Disconnect(context.TODO())
 
@@ -40,9 +36,7 @@ func Disconnect(client *mongo.Client) {
 	}
 }
 
-/*
-Function to test the connection to mongodb
-*/
+//Ping test the connection to mongodb
 func Ping() {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -56,9 +50,7 @@ func Ping() {
 	log.Println("info : successfully connected and pinged")
 }
 
-/*
-Function to retrieve all repositories from mongodb
-*/
+//GetRepos retrieve all repositories from mongodb
 func GetRepos() Entity.Repositories {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -88,9 +80,7 @@ func GetRepos() Entity.Repositories {
 	return repositories
 }
 
-/*
-Function to retrieve all repositories from mongodb filter by language
-*/
+//GetReposByLanguage retrieve all repositories from mongodb filter by language
 func GetReposByLanguage(language string) Entity.Repositories {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -129,9 +119,7 @@ func GetReposByLanguage(language string) Entity.Repositories {
 	return repositories
 }
 
-/*
-Function to retrieve all repositories from mongodb filter by license
-*/
+//GetReposByLicense retrieve all repositories from mongodb filter by license
 func GetReposByLicense(license string) Entity.Repositories {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -170,9 +158,7 @@ func GetReposByLicense(license string) Entity.Repositories {
 	return repositories
 }
 
-/*
-Function to retrieve a bunch of language statistics from repositories saved into mongodb
-*/
+//GetLanguageStatistics retrieve a bunch of language statistics from repositories saved into mongodb
 func GetLanguageStatistics() []Entity.LanguageStatistics {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
@@ -202,9 +188,7 @@ func GetLanguageStatistics() []Entity.LanguageStatistics {
 	return languageStatistics
 }
 
-/*
-Function to retrieve a bunch of license statistics from repositories saved into mongodb
-*/
+//GetLicenseStatistics retrieve a bunch of license statistics from repositories saved into mongodb
 func GetLicenseStatistics() []Entity.LicenseStatistics {
 	mongoClient := Client()
 	defer Disconnect(mongoClient)
