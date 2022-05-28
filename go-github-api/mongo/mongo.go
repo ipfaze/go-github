@@ -3,6 +3,7 @@ package mongo
 import (
 	Entity "go-github-api/entity"
 	"log"
+	"os"
 
 	"context"
 
@@ -13,8 +14,7 @@ import (
 )
 
 var (
-	MONGO_URL = "mongodb://root:example@localhost:27017/?maxPoolSize=20&w=majority"
-	//MONGO_URL = "mongodb://" + os.Getenv("MONGO_USER") + ":" + os.Getenv("MONGO_PASSWORD") + "@" + os.Getenv("MONGO_HOST") + ":" + os.Getenv("MONGO_PORT") + "/?maxPoolSize=20&w=majority"
+	MONGO_URL = "mongodb://" + os.Getenv("MONGO_USER") + ":" + os.Getenv("MONGO_PASSWORD") + "@" + os.Getenv("MONGO_HOST") + ":" + os.Getenv("MONGO_PORT") + "/?maxPoolSize=20&w=majority"
 )
 
 /*
@@ -98,7 +98,7 @@ func GetReposByLanguage(language string) Entity.Repositories {
 	repositoriesCollection := mongoClient.Database("go-github").Collection("repositories")
 
 	regex := bson.D{{Key: "language", Value: bson.D{
-		{Key: "$regex", Value: language},
+		{Key: "$regex", Value: "^" + language + ".*"},
 		{Key: "$options", Value: "i"},
 	}}}
 
