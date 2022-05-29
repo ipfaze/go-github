@@ -25,7 +25,7 @@
 								"repositories"
 							]
 						},
-						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n```"
+						"description": "``` json\n[   \n    {\n        full_name: string,\n        owner: string,\n        repository: string,\n        language: string,\n        bytes: int,\n        license: {\n            key: string,\n            name: string,\n            url: string\n    },\n    {\n        ...\n    }\n]\n\n```"
 					},
 					"response": []
 				},
@@ -47,7 +47,7 @@
 								"go"
 							]
 						},
-						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n```\n\nif request is : go-github.localhost/api/repositories/language/go\n\nAll language should start with \"go\" (it is not case sensitive)"
+						"description": "``` json\n[   \n    {\n        full_name: string,\n        owner: string,\n        repository: string,\n        language: string,\n        bytes: int,\n        license: {\n            key: string,\n            name: string,\n            url: string\n    },\n    {\n        ...\n    }\n]\n\n```\n\nif request is : go-github.localhost/api/repositories/language/go\n\nAll language should start with \"go\" (it is not case sensitive)"
 					},
 					"response": []
 				},
@@ -69,7 +69,7 @@
 								"mit"
 							]
 						},
-						"description": "``` json\n{\n    repositories: [   \n        {\n            full_name: string,\n            owner: string,\n            repository: string,\n            language: string,\n            bytes: int,\n            license: {\n                key: string,\n                name: string,\n                url: string\n        },\n        {\n            ...\n        }\n    ]\n}\n\n\n```\n\nif request is : go-github.localhost/api/repositories/license/mit\n\nAll license name should contains \"mit\" (it is not case sensitive)"
+						"description": "``` json\n[   \n    {\n        full_name: string,\n        owner: string,\n        repository: string,\n        language: string,\n        bytes: int,\n        license: {\n            key: string,\n            name: string,\n            url: string\n    },\n    {\n        ...\n    }\n]\n\n```\n\nif request is : go-github.localhost/api/repositories/license/mit\n\nAll license name should contains \"mit\" (it is not case sensitive)"
 					},
 					"response": []
 				}
