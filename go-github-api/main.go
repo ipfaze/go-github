@@ -2,14 +2,16 @@ package main
 
 import (
 	Mongo "go-github-api/mongo"
-	"strings"
+	Repo "go-github-api/repository"
 
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func main() {
+	// Check mongodb connection
 	Mongo.Ping()
 
 	// Endpoint for repositories
@@ -26,7 +28,7 @@ func main() {
 }
 
 func getRepos(w http.ResponseWriter, r *http.Request) {
-	repositories := Mongo.GetRepos()
+	repositories := Repo.GetAllRepositories()
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -36,7 +38,7 @@ func getRepos(w http.ResponseWriter, r *http.Request) {
 func getReposByLanguage(w http.ResponseWriter, r *http.Request) {
 	language := strings.TrimPrefix(r.URL.Path, "/api/repositories/language/")
 
-	repositories := Mongo.GetReposByLanguage(language)
+	repositories := Repo.GetRepositoriesByLanguage(language)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -46,7 +48,7 @@ func getReposByLanguage(w http.ResponseWriter, r *http.Request) {
 func getReposByLicense(w http.ResponseWriter, r *http.Request) {
 	license := strings.TrimPrefix(r.URL.Path, "/api/repositories/license/")
 
-	repositories := Mongo.GetReposByLicense(license)
+	repositories := Repo.GetRepositoriesByLicense(license)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -54,7 +56,7 @@ func getReposByLicense(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLanguageStatistics(w http.ResponseWriter, r *http.Request) {
-	statistics := Mongo.GetLanguageStatistics()
+	statistics := Repo.GetAllLanguageStatistics()
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -62,7 +64,7 @@ func getLanguageStatistics(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLicenseStatistics(w http.ResponseWriter, r *http.Request) {
-	statistics := Mongo.GetLicenseStatistics()
+	statistics := Repo.GetAllLicenseStatistics()
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

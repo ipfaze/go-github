@@ -4,6 +4,7 @@ import (
 	Entity "go-github-fetcher/entity"
 	Helpers "go-github-fetcher/helpers"
 	Mongo "go-github-fetcher/mongo"
+	Repo "go-github-fetcher/repository"
 
 	"log"
 	"time"
@@ -59,14 +60,13 @@ func sendRequestAndSaveData(url string) {
 			licenseStats[key].Total++
 		}
 
-		id := Mongo.InsertRepository(repositoriesResponse.Items[i])
+		id := Repo.InsertRepository(repositoriesResponse.Items[i])
 		if i == 0 {
 			idToDelete = id
 		}
 	}
+	Repo.RemoveAllRepositoryBefore(idToDelete)
 
-	Mongo.RemoveAllRepository(idToDelete)
-
-	Mongo.InsertLanguageStatistics(languageStats)
-	Mongo.InsertLicenseStatistics(licenseStats)
+	Repo.InsertManyLanguageStatistics(languageStats)
+	Repo.InsertManyLicenseStatistics(licenseStats)
 }

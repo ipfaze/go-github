@@ -1,9 +1,5 @@
 package entity
 
-type Repositories struct {
-	Repositories []Repository `json:"repositories"`
-}
-
 type Repository struct {
 	FullName   string  `json:"full_name" bson:"full_name"`
 	Owner      string  `json:"owner" bson:"owner"`
