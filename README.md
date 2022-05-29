@@ -1,52 +1,54 @@
 # Go-GitHub 
 
-Go-GitHub is a scallable API which provides endpoints to retrieve the latest updated 100 repositories.
-As a user you can filter this result by `language` and/or `licences`
-It also responds some statistics about those repositories
+Go-GitHub is a scallable API which provides endpoints to retrieve the most recently updated 100 repositories.
 
-You can see a diagram of usecase under `/docs/diagrams/usecase.jpeg`
+As a user you can filter the results by `language` or `licences`.
+
+It also provides some statistics about those repositories such as number of repositories by language or number of repositories by license.
+
+You can see a diagram of use case under `/docs/diagrams/usecase.jpeg`
 
 -----------------
 
 ## Architecture
 
-This API will be separate in two different pieces described bellow.
+This API will be separated in two different pieces described bellow.
 You can see a diagram of the architecture under `/docs/diagrams/architecture.jpeg`
-
------------------
 
 ### Project Parts
 
 #### Go-GitHub-Fetcher
 
-This part will request the GitHub API every 6 minutes to retrieve the data about repositories.
-To not exceed the rate limit of the GitHub API which is 10 requests per hour.
+This part will query the GitHub API every 6 minutes to fetch any data relating to the repositories.
+The 6 minutes timeframe has be chosen so as not to exceed the maximum request limit of the GitHub API which is 10 requests per hour.
 
-It can be increased to 30 by passing a personal token in the requests
-This will not be covered in this version but can be a great upgrade in the future.
+Although it can be increased to 30 by passing a personal token in the requests it will not be covered in this version but could be a beneficial upgrade in the future.
 
-All the data retrieved will be saved in a Master MongoDB will replicate into multiple Slave MongoDB.
-
+All the data retrieved will be saved in a Master MongoDB which will be replicated into multiple Slave MongoDB.
 
 #### Go-Github-Api
 
-This part will provide an API to the client.
-The API while retrieve data from the Slave MongoDB and sent it back to the client.
+This part will provide a client API.
+The API is designed to retrieve data from the Slave MongoDB and send it back to the client.
+
 It can be scalled horizontally coupled with new Slave MongoDB to increase performance / time request. 
 
-You can find a full documentation about all the endpoint under `/docs/api/Go-Github.postman.json`
-To see it and test the endpoint, you can use [postman](https://www.postman.com/) and import the json file.
+You can find full documentation about all the endpoints under `/docs/api/Go-Github.postman.json`
+To see and test the endpoint, you can use [postman](https://www.postman.com/) and import the json file.
 
-### Why this architecture
+### Why this architecture ?
 
-I choose to separate this projects for more scalability and availability.
-Because even if the GitHub API is down or has a change, clients can continue to request our API and get data.
-If the GitHub API has a change, we just have to update the Go-Github-Fetcher.
+I chose to divide this project in 2 distinct parts being Go-Github-Api to read the MongoDB data and Go-Github-Fetcher to query the GitHub Api and save the data into MongoDB.
 
-On the other part, the Go-Github-Api is easily horizontaly scalable to cope with the increased workload.
+This architecture design choice has been made in order to achieve maximum scalability and availability.
+
+On the one hand, even if the GitHub API is down or is modified, clients can continue to query our API and get data.
+If the GitHub API is modified, we just have to update the Go-Github-Fetcher project.
+
+On the other hand, the Go-Github-Api is easily horizontaly scalable to cope with the increased workload.
 Same can be applied to the MongoDB, with replicates.
 
-By the way, Go-Github-Api and Go-Github-Fetcher are loosely couple because they are just coupled with the MongoDB.
+By the way, Go-Github-Api and Go-Github-Fetcher are loosely coupled because they are just linked by the MongoDB instances.
 
 -----------------
 
@@ -63,25 +65,23 @@ docker-compose up --build
 
 The API will be accessible at this url : [http://go-github.localhost](http://go-github.localhost)
 
-To watch all the services and your status, you can visit the dashboard of Traefik [here](http://localhost:8080)
-Please consider the Traefik dashboard only for development purpose and not for production.
+To watch all the services and their statuses, you can visit the dashboard of Traefik [here](http://localhost:8080)
+Please consider the Traefik dashboard for development purposes only and disregard for production.
 
 -----------------
 
 ## What's next
 
 #### Go-Github-Api
-- [] Set Repository design pattern
 - [] Add unit tests
 - [] Add e2e tests
 
 #### Go-Github-Fetcher
-- [] Set Repository design pattern
-- [] Add environment variable "GITHUB_API_TOKEN" increase request to GitHub API per hour
+- [] Add environment variable "GITHUB_API_TOKEN" to allow for an increase in the number of requests allowance to GitHub API per hour
 - [] Add unit tests
 - [] Add e2e tests
 - [] Refactorize helpers package
 
 #### Whole project
-- [] Improve horizontal scalability by setting more instance of MongoDB as replicates into docker-compose.yaml
-- [] Set CI/CD for testing project before push it or merge it
+- [] Improve horizontal scalability by setting more instances of MongoDB as replicates into docker-compose.yaml
+- [] Set CI/CD to test the project before merging it
