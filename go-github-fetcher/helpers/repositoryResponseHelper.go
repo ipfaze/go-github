@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"encoding/json"
-	"log"
 
 	Entity "go-github-fetcher/entity"
 )
@@ -13,7 +12,6 @@ func ConvertBytesToRepositoriesResponse(resp []byte) Entity.RepositoriesResponse
 
 	err := json.Unmarshal(resp, &gitResponse)
 	if err != nil {
-		log.Fatal("error : unmarshaling to Entity.RepositoriesResponse throw -> ", err)
 		return Entity.RepositoriesResponse{}
 	}
 

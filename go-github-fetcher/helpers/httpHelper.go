@@ -1,8 +1,9 @@
 package helpers
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
@@ -18,13 +19,12 @@ func HttpClient() *http.Client {
 
 //HttpCall prepare and send the request to the GitHub API to retrieve data about public repositories
 //It returns the body content of the response as an array of byte
-func HttpCall(url string) []byte {
+func HttpCall(url string) ([]byte, error) {
 	client := HttpClient()
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal("error : creating the request throw -> ", err.Error())
-		return nil
+		return nil, err
 	}
 
 	// Prepare Header to request GitHub API
@@ -34,24 +34,23 @@ func HttpCall(url string) []byte {
 	// Execute request
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal("error : requesting API throw -> ", err.Error())
-		return nil
+		return nil, err
 	}
 
 	defer response.Body.Close()
 
+	fmt.Println(response.StatusCode != http.StatusOK)
 	if response.StatusCode != http.StatusOK {
-		log.Fatal("error : response status code is not OK, get -> ", response.StatusCode)
-		return nil
+		errorMessage := "The response status code for " + url + " is not 200"
+		return nil, errors.New(errorMessage)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal("error : reading response body throw -> ", err.Error())
-		return nil
+		return nil, err
 	}
 
-	return body
+	return body, nil
 }
 
 //ConstructGitHubUrl construct the GitHub API url for repositories

@@ -36,7 +36,10 @@ func main() {
 func sendRequestAndSaveData(url string) {
 	log.Println("Refreshing database ", time.Now().Format("2006-01-02 15:04:05"))
 
-	resp := Helpers.HttpCall(url)
+	resp, err := Helpers.HttpCall(url)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	repositoriesResponse := Helpers.ConvertBytesToRepositoriesResponse(resp)
 
