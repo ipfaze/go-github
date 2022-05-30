@@ -1,5 +1,7 @@
 # Go-GitHub 
 
+![build](https://github.com/ipfaze/go-github/actions/workflows/go.yml/badge.svg)
+
 Go-GitHub is a scallable API which provides endpoints to retrieve the most recently updated 100 repositories.
 
 As a user you can filter the results by `language` or `licences`.
