@@ -70,6 +70,35 @@ Please consider the Traefik dashboard for development purposes only and disregar
 
 -----------------
 
+## Tests
+
+Unit tests are only available at this moment for the Go-Github-Fetcher.
+To run it, please start a terminal in the `go-github-fetcher` and run :
+
+### Without coverage report
+```shell
+go test ./...
+```
+
+### With coverage report
+```shell
+go test -cover ./... -v -coverpkg=./...
+```
+
+### With coverage report by function
+```shell
+go test -coverprofile=coverage.out ./... -v -coverpkg=./...
+go tool cover -func=coverage.out
+```
+
+### With coverage report as html
+```shell
+go test -coverprofile=coverage.out ./... -v -coverpkg=./...
+go tool cover -html=coverage.out
+```
+
+-----------------
+
 ## What's next
 
 #### Go-Github-Api
@@ -78,9 +107,9 @@ Please consider the Traefik dashboard for development purposes only and disregar
 
 #### Go-Github-Fetcher
 - [] Add environment variable "GITHUB_API_TOKEN" to allow for an increase in the number of requests allowance to GitHub API per hour
-- [] Add unit tests
+- [] Add more unit tests
 - [] Add e2e tests
-- [] Refactorize helpers package
+- [] Refactorize helpers package (maybe use generics)
 
 #### Whole project
 - [] Improve horizontal scalability by setting more instances of MongoDB as replicates into docker-compose.yaml
