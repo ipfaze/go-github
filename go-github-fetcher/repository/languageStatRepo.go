@@ -18,8 +18,6 @@ type LanguageStatRepo interface {
 
 //InsertManyLanguageStatistics insert many language statistics into mongodb
 func InsertManyLanguageStatistics(languageStats []Entity.LanguageStatistics) {
-	RemoveAllLanguageStatistics()
-
 	mongoClient := Mongo.Client()
 	defer Mongo.Disconnect(mongoClient)
 

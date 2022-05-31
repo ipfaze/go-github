@@ -18,8 +18,6 @@ type LicenseStatRepo interface {
 
 //InsertManyLicenseStatistics insert many license statistics into mongodb
 func InsertManyLicenseStatistics(licenseStats []Entity.LicenseStatistics) {
-	RemoveAllLicenseStatistics()
-
 	mongoClient := Mongo.Client()
 	defer Mongo.Disconnect(mongoClient)
 

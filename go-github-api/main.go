@@ -1,7 +1,6 @@
 package main
 
 import (
-	Mongo "go-github-api/mongo"
 	Service "go-github-api/service"
 
 	"log"
@@ -9,9 +8,6 @@ import (
 )
 
 func main() {
-	// Check mongodb connection
-	Mongo.Ping()
-
 	// Endpoint for repositories
 	http.HandleFunc("/api/repositories", Service.GetAllRepositories)
 	http.HandleFunc("/api/repositories/language/", Service.GetRepositoriesByLanguage)
