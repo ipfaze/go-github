@@ -1,4 +1,4 @@
-name: Go
+name: Build
 
 on:
   push:
@@ -22,9 +22,6 @@ jobs:
     - name: Build
       run: cd ./go-github-api; go build -v ./...
 
-    - name: Test
-      run: cd ./go-github-api; go test -v ./...
-
   build-fetcher:
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +34,3 @@ jobs:
 
     - name: Build
       run: cd ./go-github-fetcher; go build -v ./...
-
-    - name: Test
-      run: cd ./go-github-fetcher; go test -v ./...
