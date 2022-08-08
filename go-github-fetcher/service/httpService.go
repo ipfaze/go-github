@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -12,13 +12,13 @@ const (
 	GITHUB_API_URL = "https://api.github.com/search/repositories"
 )
 
-//HttpClient instanciate an http client and return it
+// HttpClient instanciate an http client and return it
 func HttpClient() *http.Client {
 	return &http.Client{Timeout: 10 * time.Second}
 }
 
-//HttpCall prepare and send the request to the GitHub API to retrieve data about public repositories
-//It returns the body content of the response as an array of byte
+// HttpCall prepare and send the request to the GitHub API to retrieve data about public repositories
+// It returns the body content of the response as an array of byte
 func HttpCall(url string) ([]byte, error) {
 	client := HttpClient()
 
@@ -45,7 +45,7 @@ func HttpCall(url string) ([]byte, error) {
 		return nil, errors.New(errorMessage)
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func HttpCall(url string) ([]byte, error) {
 	return body, nil
 }
 
-//ConstructGitHubUrl construct the GitHub API url for repositories
+// ConstructGitHubUrl construct the GitHub API url for repositories
 func ConstructGitHubUrl() string {
 	date := time.Now().Add(-24 * time.Hour)
 
