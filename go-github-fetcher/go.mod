@@ -2,7 +2,7 @@ module go-github-fetcher
 
 go 1.18
 
-require go.mongodb.org/mongo-driver v1.10.2
+require go.mongodb.org/mongo-driver v1.10.3
 
 require (
 	github.com/golang/snappy v0.0.1 // indirect
