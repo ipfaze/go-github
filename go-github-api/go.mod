@@ -2,7 +2,7 @@ module go-github-api
 
 go 1.18
 
-require go.mongodb.org/mongo-driver v1.10.3
+require go.mongodb.org/mongo-driver v1.11.2
 
 require (
 	github.com/golang/snappy v0.0.1 // indirect
